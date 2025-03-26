@@ -1,0 +1,31 @@
+from concurrent import futures
+import logging
+import os
+import sys
+
+proto_generated_path = os.path.join(os.path.dirname(__file__), "proto_generated")
+if proto_generated_path not in sys.path:
+    sys.path.insert(0, proto_generated_path)
+
+import grpc
+from boilerplate_ms_python.services.greeter_service import Greeter
+from boilerplate_ms_python.proto_generated import helloworld_pb2_grpc
+
+
+def serve():
+    port = "50051"
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    """
+    Import the generated _pb2_grpc files and add the service to server 
+    for each .proto added
+    """
+    helloworld_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
+    server.add_insecure_port("[::]:" + port)
+    server.start()
+    print("Server started, listening on " + port)
+    server.wait_for_termination()
+
+
+if __name__ == "__main__":
+    logging.basicConfig()
+    serve()

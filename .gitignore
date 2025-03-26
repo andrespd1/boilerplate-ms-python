@@ -1,0 +1,4 @@
+src/boilerplate_ms_python/proto_generated/*
+!src/boilerplate_ms_python/proto_generated/__init__.py
+.venv
+**/__pycache__/
