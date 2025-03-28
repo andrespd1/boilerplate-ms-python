@@ -1,5 +1,5 @@
 [project]
-name = "boilerplate-ms-python" #TODO: Modify this with your service name
+name = "boilerplate-ms-python" #TODO: Replace "boilerplate-ms-python" with your project name
 version = "0.1.0"
 description = ""
 authors = [
@@ -11,10 +11,16 @@ dependencies = [
     "grpcio (>=1.71.0,<2.0.0)",
     "grpcio-tools (>=1.71.0,<2.0.0)",
     "watchgod (>=0.8.2,<0.9.0)",
+    "sqlalchemy (>=2.0.39,<3.0.0)",
+    "alembic (>=1.15.1,<2.0.0)",
+    "psycopg2-binary (>=2.9.10,<3.0.0)",
+    "python-dotenv (>=1.1.0,<2.0.0)",
+    "sqlalchemy-utils (>=0.41.2,<0.42.0)",
+    "pydantic (>=2.10.6,<3.0.0)",
 ]
 
 [tool.poetry]
-packages = [{include = "boilerplate_ms_python", from = "src"}] #TODO: Modify this with your service name
+packages = [{include = "boilerplate_ms_python", from = "src"}] #TODO: Replace "boilerplate-ms-python" with your project name
 
 
 [tool.poetry.group.dev.dependencies]

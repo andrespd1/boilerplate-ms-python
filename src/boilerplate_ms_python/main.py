@@ -1,7 +1,13 @@
-from concurrent import futures
-import logging
 import os
 import sys
+import logging
+from concurrent import futures
+from dotenv import load_dotenv
+
+from boilerplate_ms_python.config.db_client import Base, get_session, engine
+
+
+load_dotenv(override=True)
 
 proto_generated_path = os.path.join(os.path.dirname(__file__), "proto_generated")
 if proto_generated_path not in sys.path:
@@ -28,4 +34,5 @@ def serve():
 
 if __name__ == "__main__":
     logging.basicConfig()
+    Base.metadata.create_all(bind=engine)
     serve()
