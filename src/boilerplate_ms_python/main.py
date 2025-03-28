@@ -1,10 +1,14 @@
 import os
 import sys
-import logging
 from concurrent import futures
 from dotenv import load_dotenv
 
-from boilerplate_ms_python.config.db_client import Base, get_session, engine
+from boilerplate_ms_python.config.db_client import Base, engine
+from boilerplate_ms_python.config.grpc_interceptor import (
+    AuthInterceptor,
+    LoggerInterceptor,
+)
+from boilerplate_ms_python.config.logger_config import logger
 
 
 load_dotenv(override=True)
@@ -19,8 +23,11 @@ from boilerplate_ms_python.proto_generated import helloworld_pb2_grpc
 
 
 def serve():
-    port = "50051"
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    port = os.getenv("PORT", "50051")
+    server = grpc.server(
+        futures.ThreadPoolExecutor(max_workers=10),
+        interceptors=(AuthInterceptor(), LoggerInterceptor()),
+    )
     """
     Import the generated _pb2_grpc files and add the service to server 
     for each .proto added
@@ -28,11 +35,10 @@ def serve():
     helloworld_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
     server.add_insecure_port("[::]:" + port)
     server.start()
-    print("Server started, listening on " + port)
+    logger.info(msg=f"Server started, listening on {port}")
     server.wait_for_termination()
 
 
 if __name__ == "__main__":
-    logging.basicConfig()
     Base.metadata.create_all(bind=engine)
     serve()
