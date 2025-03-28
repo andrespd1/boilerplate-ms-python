@@ -9,6 +9,7 @@ from boilerplate_ms_python.config.grpc_interceptor import (
     LoggerInterceptor,
 )
 from boilerplate_ms_python.config.logger_config import logger
+from grpc_reflection.v1alpha import reflection
 
 
 load_dotenv(override=True)
@@ -19,7 +20,7 @@ if proto_generated_path not in sys.path:
 
 import grpc
 from boilerplate_ms_python.services.greeter_service import Greeter
-from boilerplate_ms_python.proto_generated import helloworld_pb2_grpc
+from boilerplate_ms_python.proto_generated import helloworld_pb2_grpc, helloworld_pb2
 
 
 def serve():
@@ -33,6 +34,16 @@ def serve():
     for each .proto added
     """
     helloworld_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
+    """
+    Add _pb2.DESCRIPTOR.services_by_name["NewServiceName"] for each
+    .proto added for server reflection
+    """
+
+    service_names = (
+        helloworld_pb2.DESCRIPTOR.services_by_name["Greeter"].full_name,
+        reflection.SERVICE_NAME,
+    )
+    reflection.enable_server_reflection(service_names, server)
     server.add_insecure_port("[::]:" + port)
     server.start()
     logger.info(msg=f"Server started, listening on {port}")
