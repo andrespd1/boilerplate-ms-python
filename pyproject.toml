@@ -10,7 +10,6 @@ requires-python = ">=3.10"
 dependencies = [
     "grpcio (>=1.71.0,<2.0.0)",
     "grpcio-tools (>=1.71.0,<2.0.0)",
-    "watchgod (>=0.8.2,<0.9.0)",
     "sqlalchemy (>=2.0.39,<3.0.0)",
     "alembic (>=1.15.1,<2.0.0)",
     "psycopg2-binary (>=2.9.10,<3.0.0)",
@@ -26,7 +25,29 @@ packages = [{include = "boilerplate_ms_python", from = "src"}] #TODO: Replace "b
 
 [tool.poetry.group.dev.dependencies]
 debugpy = "^1.8.13"
+pytest = "^8.3.5"
+pytest-mock = "^3.14.0"
+watchgod = "^0.8.2"
+pytest-cov = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+addopts = "--cov=boilerplate_ms_python --cov-report=term-missing"
+
+[tool.coverage.run]
+branch = true
+
+omit = [
+  "*/__init__.py",
+  "src/boilerplate_ms_python/dev_runner.py",
+  "src/boilerplate_ms_python/main.py",
+  "src/boilerplate_ms_python/models/*",
+  "src/boilerplate_ms_python/config/*",
+  "src/boilerplate_ms_python/repositories/*",
+  "src/boilerplate_ms_python/schemas/*",
+  "src/boilerplate_ms_python/proto_generated/*",
+
+]
