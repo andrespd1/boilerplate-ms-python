@@ -21,8 +21,9 @@ def start_app():
         "-m",
         "debugpy",
         "--listen",
-        "5678",  # This flag makes the process wait until a debugger attaches.
-        "src/boilerplate_ms_python/main.py",  # TODO: Replace "boilerplate-ms-python" with your project name
+        "0.0.0.0:5678",
+        "--wait-for-client",
+        "src/boilerplate_ms_python/main.py",
     ]
     try:
         subprocess.run(command)

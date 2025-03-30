@@ -1,0 +1,27 @@
+FROM python:3.10-slim
+
+# Set custom Poetry installation directory
+
+ENV POETRY_NO_INTERACTION=1 \
+    POETRY_CACHE_DIR='/var/cache/pypoetry' \
+    POETRY_HOME='/usr/local' \
+    POETRY_VIRTUALENVS_CREATE=false
+
+RUN apt-get update && apt-get install curl -y && apt-get clean \
+    && curl -sSL https://install.python-poetry.org | python3 -
+
+ENV PATH="/root/.local/bin:$PATH"
+ENV PYTHONPATH="/app/src:$PYTHONPATH"
+
+WORKDIR /app
+
+COPY pyproject.toml poetry.lock ./
+
+RUN poetry install --no-root --no-interaction
+
+COPY . .
+
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+USER appuser
+
+CMD ["python3", "src/boilerplate_ms_python/dev_runner.py"]

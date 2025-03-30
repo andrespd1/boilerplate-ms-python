@@ -1,0 +1,20 @@
+{
+	"configurations": [
+		{
+			"name": "docker-compose: run",
+			"type": "debugpy",
+			"request": "attach",
+			"preLaunchTask": "docker-compose: up",
+			"connect": {
+				"host": "127.0.0.1",
+				"port": 5678
+			},
+			"pathMappings": [
+				{
+					"localRoot": "${workspaceFolder}",
+					"remoteRoot": "/app"
+				}
+			]
+		}
+	]
+}
