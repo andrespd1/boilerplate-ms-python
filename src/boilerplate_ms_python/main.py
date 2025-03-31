@@ -10,6 +10,7 @@ from boilerplate_ms_python.config.grpc_interceptor import (
 )
 from boilerplate_ms_python.config.logger_config import logger
 from grpc_reflection.v1alpha import reflection
+from boilerplate_ms_python.config.redis_client import init_redis
 
 
 load_dotenv(override=True)
@@ -52,4 +53,5 @@ def serve():
 
 if __name__ == "__main__":
     Base.metadata.create_all(bind=engine)
+    init_redis()
     serve()

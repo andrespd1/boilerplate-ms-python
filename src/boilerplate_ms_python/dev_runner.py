@@ -22,7 +22,7 @@ def start_app():
         "debugpy",
         "--listen",
         "0.0.0.0:5678",
-        "--wait-for-client",
+        # "--wait-for-client",
         "src/boilerplate_ms_python/main.py",
     ]
     try:
