@@ -1,10 +1,9 @@
 {
 	"configurations": [
 		{
-			"name": "docker-compose: run",
+			"name": "docker-compose: attach",
 			"type": "debugpy",
 			"request": "attach",
-			"preLaunchTask": "docker-compose: up",
 			"connect": {
 				"host": "127.0.0.1",
 				"port": 5678
