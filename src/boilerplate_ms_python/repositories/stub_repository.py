@@ -1,4 +1,3 @@
-from contextlib import contextmanager
 from boilerplate_ms_python.config.db_client import with_session
 from boilerplate_ms_python.models.stub_model import StubModel
 

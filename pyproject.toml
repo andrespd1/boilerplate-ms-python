@@ -30,6 +30,7 @@ pytest = "^8.3.5"
 pytest-mock = "^3.14.0"
 watchgod = "^0.8.2"
 pytest-cov = "^6.0.0"
+pre-commit = "^4.2.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
@@ -50,5 +51,14 @@ omit = [
   "src/boilerplate_ms_python/repositories/*",
   "src/boilerplate_ms_python/schemas/*",
   "src/boilerplate_ms_python/proto_generated/*",
-
 ]
+
+[tool.black]
+line-length = 100
+target-version = ["py38"]
+include = '\.pyi?$'
+
+
+[tool.isort]
+profile = "black"
+line_length = 100

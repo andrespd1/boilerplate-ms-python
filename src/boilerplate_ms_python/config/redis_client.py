@@ -1,8 +1,8 @@
 import os
-import redis
 import pickle
 from typing import Any, Optional
 
+import redis
 
 REDIS_HOST = os.getenv("REDIS_HOST", "127.0.0.1")
 REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
@@ -15,9 +15,7 @@ def init_redis():
     """Initialize Redis client (if not already). Optionally ping here."""
     global redis_client
     if redis_client is None:
-        redis_client = redis.Redis(
-            host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD
-        )
+        redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
         try:
             redis_client.ping()
             print("Connected to Redis")

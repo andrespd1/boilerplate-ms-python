@@ -1,9 +1,10 @@
-from functools import wraps
-import os
-from sqlalchemy import create_engine
-from contextlib import contextmanager
-from sqlalchemy.orm import sessionmaker, declarative_base
 import logging
+import os
+from contextlib import contextmanager
+from functools import wraps
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 _database_url = os.getenv("DATABASE_URL_PYTHON")
 engine = create_engine(_database_url)
@@ -33,6 +34,6 @@ def with_session(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         with get_session() as session:
-            return func(session=session, *args, **kwargs)
+            return func(*args, **kwargs, session=session)
 
     return wrapper

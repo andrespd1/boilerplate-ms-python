@@ -1,11 +1,10 @@
-import pytest
+from unittest.mock import Mock
+
 import grpc
-from unittest.mock import Mock, patch, MagicMock
+import pytest
+
+from boilerplate_ms_python.proto_generated.helloworld_pb2 import HelloReply, HelloRequest
 from boilerplate_ms_python.services.greeter_service import Greeter
-from boilerplate_ms_python.proto_generated.helloworld_pb2 import (
-    HelloRequest,
-    HelloReply,
-)
 
 
 @pytest.fixture
@@ -30,9 +29,7 @@ def test_say_hello_with_stub(greeter_service, mock_stub, mocker):
     context = Mock(spec=grpc.ServicerContext)
 
     # Patch `get_cache` to simulate cache miss => return False
-    mocker.patch(
-        "boilerplate_ms_python.config.redis_client.get_cache", return_value=False
-    )
+    mocker.patch("boilerplate_ms_python.config.redis_client.get_cache", return_value=False)
     # Patch `set_cache` so it just returns what the function provides
     mocker.patch(
         "boilerplate_ms_python.config.redis_client.set_cache",
@@ -40,9 +37,7 @@ def test_say_hello_with_stub(greeter_service, mock_stub, mocker):
     )
 
     # Also patch the repository call
-    mocker.patch.object(
-        greeter_service.stub_repository, "get_first_stub", return_value=mock_stub
-    )
+    mocker.patch.object(greeter_service.stub_repository, "get_first_stub", return_value=mock_stub)
 
     response = greeter_service.SayHello(request, context)
     assert response.message == "Hello, Test User! Stub name: test_stub"
@@ -54,17 +49,13 @@ def test_say_hello_without_stub(greeter_service, mocker):
     context = Mock(spec=grpc.ServicerContext)
 
     # Cache miss again
-    mocker.patch(
-        "boilerplate_ms_python.config.redis_client.get_cache", return_value=False
-    )
+    mocker.patch("boilerplate_ms_python.config.redis_client.get_cache", return_value=False)
     mocker.patch(
         "boilerplate_ms_python.config.redis_client.set_cache",
         side_effect=lambda k, v, ttl: v,
     )
 
-    mocker.patch.object(
-        greeter_service.stub_repository, "get_first_stub", return_value=None
-    )
+    mocker.patch.object(greeter_service.stub_repository, "get_first_stub", return_value=None)
 
     response = greeter_service.SayHello(request, context)
     assert response.message == "Hello, Test User! Stub name: None"
@@ -75,17 +66,13 @@ def test_say_hello_empty_name(greeter_service, mock_stub, mocker):
     request = HelloRequest(name="")
     context = Mock(spec=grpc.ServicerContext)
 
-    mocker.patch(
-        "boilerplate_ms_python.config.redis_client.get_cache", return_value=False
-    )
+    mocker.patch("boilerplate_ms_python.config.redis_client.get_cache", return_value=False)
     mocker.patch(
         "boilerplate_ms_python.config.redis_client.set_cache",
         side_effect=lambda k, v, ttl: v,
     )
 
-    mocker.patch.object(
-        greeter_service.stub_repository, "get_first_stub", return_value=mock_stub
-    )
+    mocker.patch.object(greeter_service.stub_repository, "get_first_stub", return_value=mock_stub)
 
     response = greeter_service.SayHello(request, context)
     assert response.message == "Hello, ! Stub name: test_stub"
@@ -102,11 +89,9 @@ def test_say_hello_cache_hit(greeter_service, mocker):
     cached_reply = HelloReply(message="Hello, Cached User! Stub name: from_cache")
 
     # `get_cache` returns the cached object => skipping repository call
-    mocker.patch(
-        "boilerplate_ms_python.config.redis_client.get_cache", return_value=cached_reply
-    )
+    mocker.patch("boilerplate_ms_python.config.redis_client.get_cache", return_value=cached_reply)
 
-    # `set_cache` should NOT be called if we already have a cache hit, but we can patch it to confirm usage
+    # `set_cache` should NOT be called, but we can patch it to confirm usage
     mock_set_cache = mocker.patch("boilerplate_ms_python.config.redis_client.set_cache")
 
     # Also mock the repository to ensure it's NOT called
@@ -131,9 +116,7 @@ def test_say_hello_cache_miss_leads_to_repo_call(greeter_service, mock_stub, moc
     context = Mock(spec=grpc.ServicerContext)
 
     # Cache miss => get_cache returns False
-    mocker.patch(
-        "boilerplate_ms_python.config.redis_client.get_cache", return_value=False
-    )
+    mocker.patch("boilerplate_ms_python.config.redis_client.get_cache", return_value=False)
 
     # We'll let set_cache just pass the computed value
     mock_set_cache = mocker.patch(
@@ -142,9 +125,7 @@ def test_say_hello_cache_miss_leads_to_repo_call(greeter_service, mock_stub, moc
     )
 
     # Repo returns our mock stub
-    mocker.patch.object(
-        greeter_service.stub_repository, "get_first_stub", return_value=mock_stub
-    )
+    mocker.patch.object(greeter_service.stub_repository, "get_first_stub", return_value=mock_stub)
 
     response = greeter_service.SayHello(request, context)
     assert response.message == "Hello, Missed User! Stub name: test_stub"

@@ -29,13 +29,9 @@ class LoggerInterceptor(grpc.ServerInterceptor):
         if handler.unary_unary:
 
             def logger_handler(request, context):
-                logger.info(
-                    f"Received request at {handler_call_details.method}: {request}"
-                )
+                logger.info(f"Received request at {handler_call_details.method}: {request}")
                 response = handler.unary_unary(request, context)
-                logger.info(
-                    f"Sending response for {handler_call_details.method}: {response}"
-                )
+                logger.info(f"Sending response for {handler_call_details.method}: {response}")
                 return response
 
             return grpc.unary_unary_rpc_method_handler(

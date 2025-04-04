@@ -5,9 +5,11 @@ This script watches the current directory for any file changes.
 When a change is detected, it restarts the Python application with debugpy enabled.
 """
 
-import sys
 import subprocess
+import sys
+
 from watchgod import run_process
+
 from boilerplate_ms_python.config.logger_config import logger
 
 

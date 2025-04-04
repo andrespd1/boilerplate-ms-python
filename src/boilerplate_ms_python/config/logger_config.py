@@ -1,12 +1,14 @@
-import os
 import logging
-
+import os
 
 logger = logging.getLogger(
     "bolilerplate_ms_python"
 )  # TODO: Replace "boilerplate-ms-python" with your project name
 
-FORMAT = f"[%(levelname)s] %(asctime)s [%(filename)s](%(funcName)s){'(%(lineno)d)' if os.getenv('PYTHON_ENV' )!= 'PRD' else ''}: %(message)s"
+include_line_number = "(%(lineno)d)" if os.getenv("PYTHON_ENV") != "PRD" else ""
+FORMAT = (
+    f"[%(levelname)s] %(asctime)s [%(filename)s](%(funcName)s){include_line_number}: %(message)s"
+)
 LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO")
 logging.basicConfig(
     level=getattr(logging, LOGGING_LEVEL, logging.INFO),
