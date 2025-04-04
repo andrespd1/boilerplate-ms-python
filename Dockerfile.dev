@@ -1,7 +1,6 @@
 FROM python:3.10-slim
 
 # Set custom Poetry installation directory
-
 ENV POETRY_NO_INTERACTION=1 \
     POETRY_CACHE_DIR='/var/cache/pypoetry' \
     POETRY_HOME='/usr/local' \
@@ -15,13 +14,12 @@ ENV PYTHONPATH="/app/src:$PYTHONPATH"
 
 WORKDIR /app
 
+# Copy dependency files and the setup script into the container
 COPY pyproject.toml poetry.lock ./
-
-RUN poetry install --no-root --no-interaction
+COPY setup.sh ./
 
 COPY . .
 
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
-USER appuser
+RUN chmod +x setup.sh && ./setup.sh init-docker 
 
 CMD ["python3", "src/boilerplate_ms_python/dev_runner.py"]

@@ -5,7 +5,7 @@ logger = logging.getLogger(
     "bolilerplate_ms_python"
 )  # TODO: Replace "boilerplate-ms-python" with your project name
 
-include_line_number = "(%(lineno)d)" if os.getenv("PYTHON_ENV") != "PRD" else ""
+include_line_number = "(%(lineno)d)" if os.getenv("PYTHON_ENV") != "prd" else ""
 FORMAT = (
     f"[%(levelname)s] %(asctime)s [%(filename)s](%(funcName)s){include_line_number}: %(message)s"
 )

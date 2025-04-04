@@ -42,12 +42,11 @@ When you generate a new microservice from this repository, follow these steps to
 ## Table of Contents
 
 1. [Project Structure](#project-structure)
-2. [Setup and Usage: Docker Compose](#setup-and-usage-docker-compose)
-3. [Setup and Usage: Without Docker](#setup-and-usage-without-docker)
-4. [Debugging](#debugging)
-5. [Scripts Overview](#scripts-overview)
-6. [Testing and Coverage](#testing-and-coverage)
-7. [Environment Variables](#environment-variables)
+2. [Setup and Usage](#setup-and-usage)
+3. [Debugging](#debugging)
+4. [Scripts Overview](#scripts-overview)
+5. [Testing and Coverage](#testing-and-coverage)
+6. [Environment Variables](#environment-variables)
 
 ---
 
@@ -77,7 +76,7 @@ boilerplate-ms-python/
 
 ---
 
-## (RECOMMENDED) Setup and Usage: Docker Compose
+## Setup and Usage
 
 1. **Clone the Repository**
 
@@ -86,53 +85,33 @@ boilerplate-ms-python/
    cd boilerplate-ms-python
    ```
 
-2. **Build and Run via Command Line**  
-   If you’re not using VSCode, you can build and run the containers directly from a terminal:
+2. **Run ./setup init**  
+   To install all poetry dependencies and activate your .venv you will
+   need to run this in your terminal:
+
+   ```
+   ./setup.sh init
+   ```
+
+   This will activate your python .venv in your terminal, and now you can use any package CLI installed from poetry dependencies
+
+3. **Build and Run via Command Line**  
+   Build and run the containers directly from a terminal:
+
    ```bash
    docker compose up --build -d
    ```
+
    This command will build the Docker images, then run them in detached mode.
+
+> [!NOTE]  
+> **Rebuilding Docker Image**  
+>  You will only need to rebuild the image if you're adding any dependency to the project.
 
 ### Environment Variables
 
 - **Local `.env` File**  
   Docker Compose will automatically use environment variables from your local `.env` file (located in the same directory as the `docker-compose.yml`), ensuring the service and its dependencies share the same configuration.
-
----
-
-## Setup and Usage: Without Docker
-
-1. **Clone the repository** (or create a new one using this template):
-
-   ```bash
-   git clone <repository_url>
-   cd boilerplate-ms-python
-   ```
-
-2. **Run** `./setup.sh init`:
-
-   - Installs all dependencies using Poetry (`poetry install`).
-   - Compiles `.proto` files and places generated code into `src/proto_generated/`.
-
-3. **Optional: Run Migrations**
-
-   - If you’re using Alembic, run:
-     ```bash
-     alembic upgrade head
-     ```
-     to sync your local database schema.
-
-4. **Configuration**
-
-   - Ensure you have the necessary environment variables set (see [Environment Variables](#environment-variables)).
-   - Create a `.env` file for setting these if needed.
-
-5. **Development**
-   - You can typically run:
-     ```bash
-     poetry run python src/main.py
-     ```
-     or another command (e.g., `uvicorn src.main:app --reload`) to launch your dev server.
 
 ---
 
@@ -154,6 +133,9 @@ boilerplate-ms-python/
 - **`./setup.sh proto`**  
   Re-generates gRPC services/messages from `.proto` files (if you modify them after the initial setup).
 
+- **`./setup.sh init-docker`**  
+  Re-generates gRPC services/messages from `.proto` files (if you modify them after the initial setup).
+
 ---
 
 ## Testing and Coverage
@@ -171,9 +153,9 @@ boilerplate-ms-python/
 
 Make sure to set the following environment variables for smooth operation (adjust as needed for your setup):
 
-- `DATABASE_URL_PY` (or a name of your choosing): Connection string for your database (SQLAlchemy).
+- `DATABASE_URL_PYTHON` (or a name of your choosing): Connection string for your database (SQLAlchemy).
 - `REDIS_HOST`: Host address for Redis.
 - `REDIS_PORT`: Port used by Redis.
 - `REDIS_PASSWORD`: Password for Redis (if applicable).
-- `LOG_LEVEL`: Logging level (`INFO`, `DEBUG`, `ERROR`, etc.).
-- `ENVIRONMENT`: Environment identifier (e.g., `development`, `production`).
+- `LOGGING_LEVEL`: Logging level (`INFO`, `DEBUG`, `ERROR`, etc.).
+- `PYTHON_ENV`: Environment identifier (e.g., `dev`, `prd`).
