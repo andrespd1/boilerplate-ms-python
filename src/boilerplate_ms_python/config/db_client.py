@@ -6,7 +6,12 @@ from functools import wraps
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-_database_url = os.getenv("DATABASE_URL_PYTHON")
+_database_url = (
+    f"postgresql+psycopg2://{os.getenv('POSTGRES_USER')}:"
+    f"{os.getenv('POSTGRES_PASSWORD')}@"
+    f"{os.getenv('POSTGRES_HOST')}:5432/"
+    f"{os.getenv('POSTGRES_DB')}"
+)
 engine = create_engine(_database_url)
 
 

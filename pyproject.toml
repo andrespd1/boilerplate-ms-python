@@ -1,5 +1,5 @@
 [project]
-name = "boilerplate-ms-python" #TODO: Replace "boilerplate-ms-python" with your project name
+name = "boilerplate_ms_python"
 version = "0.1.0"
 description = ""
 authors = [
@@ -21,7 +21,7 @@ dependencies = [
 ]
 
 [tool.poetry]
-packages = [{include = "boilerplate_ms_python", from = "src"}] #TODO: Replace "boilerplate-ms-python" with your project name
+packages = [{include = "boilerplate_ms_python", from = "src"}]
 
 
 [tool.poetry.group.dev.dependencies]

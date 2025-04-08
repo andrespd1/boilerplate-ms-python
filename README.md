@@ -18,7 +18,7 @@ When you generate a new microservice from this repository, follow these steps to
 
 1. **Rename the Service**
 
-   - Update all references from `boilerplate-ms-python` (or any existing placeholder name) to your desired service name (e.g., `user-service`).
+   - Update all references from `boilerplate_ms_python` (or any existing placeholder name) to your desired service name (e.g., `user-service`).
    - Common places to check:
      - `pyproject.toml` (project name, dependencies, etc.)
      - Any references in this README or other documentation
@@ -53,10 +53,10 @@ When you generate a new microservice from this repository, follow these steps to
 ## Project Structure
 
 ```
-boilerplate-ms-python/
+workspace/
 ├─ .vscode/
 ├─ migrations/         # Alembic migrations (if using Alembic)
-├─ src/
+├─ src/boilerplate_ms_python/
 │  ├─ config/
 │  ├─ enums/
 │  ├─ proto_generated/  # Generated artifacts
@@ -82,7 +82,7 @@ boilerplate-ms-python/
 
    ```bash
    git clone <repository_url>
-   cd boilerplate-ms-python
+   cd {project_name}
    ```
 
 2. **Run ./setup init**  
@@ -153,7 +153,9 @@ boilerplate-ms-python/
 
 Make sure to set the following environment variables for smooth operation (adjust as needed for your setup):
 
-- `DATABASE_URL_PYTHON` (or a name of your choosing): Connection string for your database (SQLAlchemy).
+- `POSTGRES_USER`: User used by Postgres.
+- `POSTGRES_PASSWORD`: Password for the user used by Postgres.
+- `POSTGRES_DB`: Host address without the port for Postgres.
 - `REDIS_HOST`: Host address for Redis.
 - `REDIS_PORT`: Port used by Redis.
 - `REDIS_PASSWORD`: Password for Redis (if applicable).

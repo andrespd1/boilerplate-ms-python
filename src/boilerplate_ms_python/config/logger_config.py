@@ -1,9 +1,7 @@
 import logging
 import os
 
-logger = logging.getLogger(
-    "bolilerplate_ms_python"
-)  # TODO: Replace "boilerplate-ms-python" with your project name
+logger = logging.getLogger("bolilerplate_ms_python")
 
 include_line_number = "(%(lineno)d)" if os.getenv("PYTHON_ENV") != "prd" else ""
 FORMAT = (

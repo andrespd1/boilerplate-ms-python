@@ -1,7 +1,7 @@
-# TODO: Replace "boilerplate_ms_python" with your project name
 src/boilerplate_ms_python/proto_generated/*
 !src/boilerplate_ms_python/proto_generated/__init__.py
 .venv
 **/__pycache__/
 .env
 .coverage
+.pytest_cache/
